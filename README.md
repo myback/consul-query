@@ -8,7 +8,7 @@ make install
 ```
 
 ## Use
-Configure by environment variables. See the official documentation for consul client.
+Configure by environment variables. See the [official documentation](https://www.consul.io/commands#environment-variables).
 
 ```
 consul-query help
