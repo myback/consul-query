@@ -19,12 +19,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-package main
+package cmd
 
 import (
-	"consul-client/cmd"
+	"github.com/spf13/cobra"
 )
 
-func main() {
-	cmd.Execute()
+var (
+	output    outputFormat
+	noHeaders bool
+
+	rootCmd = &cobra.Command{
+		Use:   "consul-query",
+		Short: "Simple query to Hashicorp Consul",
+		Long: `Simple query to Hashicorp Consul`,
+	}
+)
+
+// Execute executes the root command.
+func Execute() {
+	errCheck(rootCmd.Execute(), 1)
+}
+
+func init() {
+	rootCmd.PersistentFlags().BoolVarP(&noHeaders, "no-headers", "n", false, "don't show headers. Text format only")
+	rootCmd.PersistentFlags().VarP(&output, "output", "o", "output format: json, jsonp, text")
+
+	rootCmd.AddCommand(keyValueCmd)
+	rootCmd.AddCommand(serviceCmd)
 }
